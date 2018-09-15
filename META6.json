@@ -1,0 +1,22 @@
+{
+  "auth" : "cpan:ELIZABETH",
+  "authors" : [
+    "Elizabeth Mattijsen"
+  ],
+  "build-depends" : [ ],
+  "depends" : [ ],
+  "description" : "add \"is sparse\" trait to Arrays",
+  "license" : "Artistic-2.0",
+  "name" : "Array::Sparse",
+  "perl" : "6.c",
+  "provides" : {
+    "Array::Sparse" : "lib/Array/Sparse.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "https://github.com/lizmat/Array-Sparse.git",
+  "tags" : [
+    "UTILS"
+  ],
+  "test-depends" : [ ],
+  "version" : "0.0.1"
+}
