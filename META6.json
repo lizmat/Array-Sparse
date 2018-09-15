@@ -4,8 +4,10 @@
     "Elizabeth Mattijsen"
   ],
   "build-depends" : [ ],
-  "depends" : [ ],
-  "description" : "add \"is sparse\" trait to Arrays",
+  "depends" : [
+    "Array::Agnostic"
+  ],
+  "description" : "class for sparsely populated Arrays",
   "license" : "Artistic-2.0",
   "name" : "Array::Sparse",
   "perl" : "6.c",

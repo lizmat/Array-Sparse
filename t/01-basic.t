@@ -3,9 +3,15 @@ use Test;
 
 use Array::Sparse;
 
-plan 5;
+plan 3;
 
-my @a is sparse = ^10;
+my @a is Array::Sparse = ^10;
+
+is @a.gist,                  "[0 1 2 3 4 5 6 7 8 9]", 'does .gist work ok';
+is @a.Str,                    "0 1 2 3 4 5 6 7 8 9",  'does .Str work ok';
+is @a.perl, "Array::Sparse.new(0,1,2,3,4,5,6,7,8,9)", 'does .perl work ok';
+
+=finish
 
 dd @a[$_] for ^10;
 

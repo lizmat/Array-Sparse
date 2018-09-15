@@ -1,10 +1,12 @@
 use v6.c;
 
-class sparse {
-    has %sparse;
+use Array::Agnostic;
+
+class Array::Sparse:ver<0.0.1>:auth<cpan:ELIZABETH> does Array::Agnostic {
+    has %!sparse;
     has $.end = -1;
 
-    method AT-POS(Int:D $pos) is raw {
+    method AT-POS(int $pos) is raw {
         $!end = $pos if $pos > $!end;
         %!sparse.AT-KEY($pos)
     }
@@ -27,7 +29,9 @@ class sparse {
         if %!sparse.EXISTS-KEY($pos) {
             if $pos == $!end {
                 my \result = %!sparse.DELETE-KEY($pos);
-                self!find-end;
+                $!end = %!sparse.elems
+                  ?? %!sparse.keys.map( *.Int ).max
+                  !! -1;
                 result
             }
             else {
@@ -39,8 +43,13 @@ class sparse {
         }
     }
 
+    method CLEAR() {
+        %!sparse = ();
+        $!end = -1;
+    }
+
     method STORE(*@values, :$initialize) {
-        %!sparse := %!sparse.WHAT.new unless $initialize;
+        self.CLEAR unless $initialize;
         $!end = @values - 1;
 
         %!sparse.ASSIGN-KEY($_,@values.AT-POS($_)) for 0 .. $!end;
@@ -61,44 +70,19 @@ class sparse {
     method iterator() { Iterate.new( :%!sparse, :$!end ) }
 
     method elems() { $!end + 1 }
-    method keys() { Seq.new( (0 .. $!end).iterator ) }
-    method values() { Seq.new(self.iterator) }
-
-    method append(+@values) {
-        self.ASSIGN-POS(++$!end,$_) for @values;
-    }
-    method push(**@values) {
-        self.ASSIGN-POS(++$!end,$_) for @values;
-    }
-    method pop() {
-        $!end > -1 {
-          ?? self.DELETE-POS($!end--)
-          !! [].pop  # standard behaviour on empty arrays
-    }
-
-    method prepend(|) { ... }
-    method unshift(|) { ... }
-    method shift(|) { ... }
-    method splice(|) { ... }
-
-    method !find-end() {
-        $!end = %!sparse.elems
-          ?? %!sparse.keys.map( *.Int ).max
-          !! -1
-    }
 }
 
 =begin pod
 
 =head1 NAME
 
-Array::Sparse - add "is sparse" trait for Arrays
+Array::Sparse - class for sparsely populated Arrays
 
 =head1 SYNOPSIS
 
   use Array::Sparse;
 
-  my @a is sparse;
+  my @a is Array::Sparse;
 
 =head1 DESCRIPTION
 
