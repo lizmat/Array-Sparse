@@ -9,9 +9,19 @@ class Array::Sparse:ver<0.0.2>:auth<cpan:ELIZABETH>
     has $.end = -1;
 
 #--- Mandatory method required by Array::Agnostic ------------------------------
-    method AT-POS(int $pos) is raw {
-        $!end = $pos if $pos > $!end;
-        %!sparse.AT-KEY($pos)
+    method AT-POS(Int:D $pos) is raw {
+        if %!sparse.EXISTS-KEY($pos) || $pos < $!end {  # $!end cannot change
+            %!sparse.AT-KEY($pos)
+        }
+        else {                                          # $!end will change
+            Proxy.new(
+                FETCH => -> $ { %!sparse.AT-KEY($pos) },
+                STORE => -> $, \value is raw {
+                    self!find-end if $pos > $!end;
+                    %!sparse.ASSIGN-KEY($pos, value);
+                }
+            )
+        }
     }
 
     method EXISTS-POS(Int:D $pos) {
@@ -27,9 +37,7 @@ class Array::Sparse:ver<0.0.2>:auth<cpan:ELIZABETH>
         if %!sparse.EXISTS-KEY($pos) {
             if $pos == $!end {
                 my \result = %!sparse.DELETE-KEY($pos);
-                $!end = %!sparse.elems
-                  ?? %!sparse.keys.map( *.Int ).max
-                  !! -1;
+                self!find-end;
                 result
             }
             else {
@@ -44,9 +52,20 @@ class Array::Sparse:ver<0.0.2>:auth<cpan:ELIZABETH>
     method elems() { $!end + 1 }
 
 #---- Optional methods for performance -----------------------------------------
+    method ASSIGN-POS($pos, \value) {
+        $!end = $pos if $pos > $!end;
+        %!sparse.ASSIGN-KEY($pos,value)
+    }
+
     method CLEAR() {
         %!sparse = ();
         $!end = -1;
+    }
+
+    method !find-end(--> Nil) {
+        $!end = %!sparse.elems
+          ?? %!sparse.keys.map( *.Int ).max
+          !! -1;
     }
 }
 
