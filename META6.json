@@ -5,7 +5,7 @@
   ],
   "build-depends" : [ ],
   "depends" : [
-    "Array::Agnostic:ver<0.0.3>"
+    "Array::Agnostic:ver<0.0.4>"
   ],
   "description" : "class for sparsely populated Arrays",
   "license" : "Artistic-2.0",

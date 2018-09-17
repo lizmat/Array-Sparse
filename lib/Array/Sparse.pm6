@@ -2,7 +2,7 @@ use v6.c;
 
 use Array::Agnostic;
 
-class Array::Sparse:ver<0.0.2>:auth<cpan:ELIZABETH>
+role Array::Sparse:ver<0.0.3>:auth<cpan:ELIZABETH>
   does Array::Agnostic
 {
     has %!sparse;
@@ -52,16 +52,52 @@ class Array::Sparse:ver<0.0.2>:auth<cpan:ELIZABETH>
     method elems() { $!end + 1 }
 
 #---- Optional methods for performance -----------------------------------------
+
+    # so we don't have to do the Proxy dance
     method ASSIGN-POS($pos, \value) {
         $!end = $pos if $pos > $!end;
         %!sparse.ASSIGN-KEY($pos,value)
     }
 
+    # so we don't have to DELETE-POS everything
     method CLEAR() {
         %!sparse = ();
         $!end = -1;
     }
 
+    # so we don't have to check non-existing keys
+    method move-indexes-up($up, $start = 0 --> Nil) {
+        my $elems = $.elems;   # so we don't need to fetch it all the time
+        for %!sparse.keys.grep($start <= * < $elems).sort( -* ) {
+            is-container(my \value = %!sparse.DELETE-KEY($_))
+              ?? %!sparse.ASSIGN-KEY($_ + $up, value)
+              !! %!sparse.BIND-KEY(  $_ + $up, value);
+        }
+        $!end += $up;          # adjust last elem
+    }
+
+    # so we don't have to check non-existing keys
+    method move-indexes-down($down, $start = $down --> Nil) {
+
+        # clear out all keys that are to be gone (may be missed when moving)
+        %!sparse.DELETE-KEY($_) for %!sparse.keys.grep(* < $start);
+
+        my $elems = $.elems;   # so we don't need to fetch it all the time
+        for %!sparse.keys.grep($start <= * < $elems).sort( +* ) -> $from {
+            my $to    = $from - $down;
+            my \value = %!sparse.DELETE-KEY($from);  # something to move
+            if is-container(value) {
+                %!sparse.DELETE-KEY($to);            # could have been bound
+                %!sparse.ASSIGN-KEY($to, value);
+            }
+            else {
+                %!sparse.BIND-KEY($to, value);       # don't care what it was
+            }
+        }
+        $!end -= $down;                              # adjust last elem
+    }
+
+#---- Our own private methods --------------------------------------------------
     method !find-end(--> Nil) {
         $!end = %!sparse.elems
           ?? %!sparse.keys.map( *.Int ).max
@@ -83,12 +119,16 @@ Array::Sparse - class for sparsely populated Arrays
 
 =head1 DESCRIPTION
 
-This module adds a C<is sparse> trait to C<Arrays>.  Its only use is to
-provide a more memory-efficient storage for arrays that are B<very> big
-(as in millions of potential elements) but with only a very limited of
-elements actually given a value (maximum about 5 %).  Unless memory is
-of the most importance, if you populate more than 5% of the keys, you will
-be better of just using a normal array.
+Exports an C<Array::Sparse> role that can be used to indicate the implementation
+of an array (aka Positional) that will not allocate anything for indexes that
+are not used.  It also allows indexes to be used that exceed the native
+integer size.
+
+Unless memory is of the most importance, if you populate more than 5% of the
+indexes, you will be better of just using a normal array.
+
+Since C<Array::Sparse> is a role, you can also use it as a base for creating
+your own custom implementations of arrays.
 
 =head1 AUTHOR
 
