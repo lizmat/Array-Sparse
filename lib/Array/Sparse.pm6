@@ -109,7 +109,7 @@ role Array::Sparse:ver<0.0.3>:auth<cpan:ELIZABETH>
 
 =head1 NAME
 
-Array::Sparse - class for sparsely populated Arrays
+Array::Sparse - role for sparsely populated Arrays
 
 =head1 SYNOPSIS
 

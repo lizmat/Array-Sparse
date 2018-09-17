@@ -3,7 +3,7 @@
 NAME
 ====
 
-Array::Sparse - class for sparsely populated Arrays
+Array::Sparse - role for sparsely populated Arrays
 
 SYNOPSIS
 ========
@@ -15,7 +15,11 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
-This module adds a `is sparse` trait to `Arrays`. Its only use is to provide a more memory-efficient storage for arrays that are **very** big (as in millions of potential elements) but with only a very limited of elements actually given a value (maximum about 5 %). Unless memory is of the most importance, if you populate more than 5% of the keys, you will be better of just using a normal array.
+Exports an `Array::Sparse` role that can be used to indicate the implementation of an array (aka Positional) that will not allocate anything for indexes that are not used. It also allows indexes to be used that exceed the native integer size.
+
+Unless memory is of the most importance, if you populate more than 5% of the indexes, you will be better of just using a normal array.
+
+Since `Array::Sparse` is a role, you can also use it as a base for creating your own custom implementations of arrays.
 
 AUTHOR
 ======

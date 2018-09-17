@@ -7,7 +7,7 @@
   "depends" : [
     "Array::Agnostic:ver<0.0.4>"
   ],
-  "description" : "class for sparsely populated Arrays",
+  "description" : "role for sparsely populated Arrays",
   "license" : "Artistic-2.0",
   "name" : "Array::Sparse",
   "perl" : "6.c",
@@ -20,5 +20,5 @@
     "UTILS"
   ],
   "test-depends" : [ ],
-  "version" : "0.0.2"
+  "version" : "0.0.3"
 }
