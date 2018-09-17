@@ -2,5 +2,9 @@ Revision history for Array-Sparse
 
 {{$NEXT}}
 
+0.0.2  2018-09-17T12:32:28+02:00
+    - Fixed problem with AT-POS vivifying
+    - Cat-licensed tests from Array::Agnostic
+
 0.0.1  2018-09-16T00:40:20+02:00
     - Initial version
