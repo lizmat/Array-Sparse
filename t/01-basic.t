@@ -63,25 +63,25 @@ subtest {
 
 subtest {
     plan 11;
-    is-deeply @a.keys, (0,1,2,3,4,5,6,7,8),
+    is-deeply @a.keys, (0,1,2,4,6,8),
       'does .keys work';
-    is-deeply @a.values, (1,2,3,Any,5,Any,7,Any,9),
+    is-deeply @a.values, (1,2,3,5,7,9),
       'does .values work';
-    is-deeply @a.pairs, (0=>1,1=>2,2=>3,3=>Any,4=>5,5=>Any,6=>7,7=>Any,8=>9),
+    is-deeply @a.pairs, (0=>1,1=>2,2=>3,4=>5,6=>7,8=>9),
       'does .pairs work';
-    is-deeply @a.kv, (0,1,1,2,2,3,3,Any,4,5,5,Any,6,7,7,Any,8,9),
+    is-deeply @a.kv, (0,1,1,2,2,3,4,5,6,7,8,9),
       'does .kv work';
 
     is-deeply @a.head, 1, 'does .head work';
     is-deeply @a.head(3), (1,2,3), 'does .head(3) work';
     is-deeply @a.tail, 9, 'does .tail work';
-    is-deeply @a.tail(3), (7,Any,9), 'does .tail(3) work';
+    is-deeply @a.tail(3), (5,7,9), 'does .tail(3) work';
 
-    is-deeply @a.list, List.new(1,2,3,Any,5,Any,7,Any,9),
+    is-deeply @a.list, List.new(1,2,3,5,7,9),
       'does .list work';
-    is-deeply @a.List, List.new(1,2,3,Any,5,Any,7,Any,9),
+    is-deeply @a.List, List.new(1,2,3,5,7,9),
       'does .List work';
-    is-deeply @a.Array, Array.new(1,2,3,Any,5,Any,7,Any,9),
+    is-deeply @a.Array, Array.new(1,2,3,5,7,9),
       'does .Array work';
 }, 'check iterator based methods';
 

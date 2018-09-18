@@ -21,6 +21,11 @@ Unless memory is of the most importance, if you populate more than 5% of the ind
 
 Since `Array::Sparse` is a role, you can also use it as a base for creating your own custom implementations of arrays.
 
+Iterating Methods
+=================
+
+Methods that iterate over the sparse array, will only report elements that actually exist. This affects methods such as `.keys`, `.values`, `.pairs`, `.kv`, `.iterator`, `.head`, `.tail`, etc.
+
 AUTHOR
 ======
 

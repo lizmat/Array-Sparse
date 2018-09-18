@@ -2,7 +2,7 @@ use v6.c;
 
 use Array::Agnostic;
 
-role Array::Sparse:ver<0.0.3>:auth<cpan:ELIZABETH>
+role Array::Sparse:ver<0.0.4>:auth<cpan:ELIZABETH>
   does Array::Agnostic
 {
     has %!sparse;
@@ -97,6 +97,43 @@ role Array::Sparse:ver<0.0.3>:auth<cpan:ELIZABETH>
         $!end -= $down;                              # adjust last elem
     }
 
+#---- Methods with slightly different semantics --------------------------------
+    method iterator() {
+        self.values.iterator
+    }
+    method keys() {
+        %!sparse.keys.map( +* ).sort
+    }
+    method values() {
+        %!sparse.keys.sort( +* ).map: { %!sparse.AT-KEY($_) }
+    }
+    method pairs() {
+        self.keys.map: { Pair.new($_, %!sparse.AT-KEY($_)) }
+    }
+    method antipairs() {
+        self.keys.map: { Pair.new(%!sparse.AT-KEY($_), $_) }
+    }
+
+    my class KV does Iterator {
+        has $.backend;
+        has $.iterator;
+        has $!index;
+
+        method pull-one() is raw {
+            with $!index {
+                my $index = $!index;
+                $!index  := Int;
+                $!backend.AT-KEY($index)          # on the value now
+            }
+            else {
+                $!index := $!iterator.pull-one    # key or IterationEnd
+            }
+        }
+    }
+    method kv() {
+        Seq.new(KV.new(backend => %!sparse, iterator => self.keys.iterator))
+    }
+
 #---- Our own private methods --------------------------------------------------
     method !find-end(--> Nil) {
         $!end = %!sparse.elems
@@ -129,6 +166,12 @@ indexes, you will be better of just using a normal array.
 
 Since C<Array::Sparse> is a role, you can also use it as a base for creating
 your own custom implementations of arrays.
+
+=head1 Iterating Methods
+
+Methods that iterate over the sparse array, will only report elements that
+actually exist.  This affects methods such as C<.keys>, C<.values>, C<.pairs>,
+C<.kv>, C<.iterator>, C<.head>, C<.tail>, etc.
 
 =head1 AUTHOR
 
