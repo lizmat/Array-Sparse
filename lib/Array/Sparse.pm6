@@ -1,8 +1,8 @@
-use v6.c;
+use v6.d;
 
-use Array::Agnostic;
+use Array::Agnostic:ver<0.0.8>:auth<cpan:ELIZABETH>;
 
-role Array::Sparse:ver<0.0.4>:auth<cpan:ELIZABETH>
+role Array::Sparse:ver<0.0.5>:auth<cpan:ELIZABETH>
   does Array::Agnostic
 {
     has %!sparse;
@@ -182,7 +182,7 @@ Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018 Elizabeth Mattijsen
+Copyright 2018, 2020 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

@@ -7,3 +7,4 @@
 .precomp/
 /releases/
 /Array-Sparse-*
+/lib/Array/Agnostic.pm6

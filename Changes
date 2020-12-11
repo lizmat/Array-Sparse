@@ -2,6 +2,11 @@ Revision history for Array-Sparse
 
 {{$NEXT}}
 
+0.0.5  2020-12-11T15:10:37+01:00
+    - Up dependency of Array::Agnostic to 0.0.8
+    - Update copyright year
+    - Raise Raku version to highest possible
+
 0.0.4  2018-09-18T12:15:43+02:00
     - Iterating methods, such as keys / values, now always skip holes
 
