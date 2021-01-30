@@ -6,7 +6,7 @@
   "build-depends": [
   ],
   "depends": [
-    "Array::Agnostic:ver<0.0.8>:auth<cpan:ELIZABETH>"
+    "Array::Agnostic:ver<0.0.9>:auth<cpan:ELIZABETH>"
   ],
   "description": "role for sparsely populated Arrays",
   "license": "Artistic-2.0",
@@ -23,5 +23,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.0.5"
+  "version": "0.0.6"
 }

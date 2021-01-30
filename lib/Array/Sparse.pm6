@@ -1,15 +1,15 @@
 use v6.d;
 
-use Array::Agnostic:ver<0.0.8>:auth<cpan:ELIZABETH>;
+use Array::Agnostic:ver<0.0.9>:auth<cpan:ELIZABETH>;
 
-role Array::Sparse:ver<0.0.5>:auth<cpan:ELIZABETH>
+role Array::Sparse:ver<0.0.6>:auth<cpan:ELIZABETH>
   does Array::Agnostic
 {
     has %!sparse;
     has $.end = -1;
 
 #--- Mandatory method required by Array::Agnostic ------------------------------
-    method AT-POS(Int:D $pos) is raw {
+    method AT-POS(::?ROLE:D: Int:D $pos) is raw {
         if %!sparse.EXISTS-KEY($pos) || $pos < $!end {  # $!end cannot change
             %!sparse.AT-KEY($pos)
         }
@@ -24,16 +24,16 @@ role Array::Sparse:ver<0.0.5>:auth<cpan:ELIZABETH>
         }
     }
 
-    method EXISTS-POS(Int:D $pos) {
+    method EXISTS-POS(::?ROLE:D: Int:D $pos) {
         %!sparse.EXISTS-KEY($pos)
     }
 
-    method BIND-POS(Int:D $pos, \value) is raw {
+    method BIND-POS(::?ROLE:D: Int:D $pos, \value) is raw {
         $!end = $pos if $pos > $!end;
         %!sparse.BIND-KEY($pos,value)
     }
 
-    method DELETE-POS(Int:D $pos) {
+    method DELETE-POS(::?ROLE:D: Int:D $pos) {
         if %!sparse.EXISTS-KEY($pos) {
             if $pos == $!end {
                 my \result = %!sparse.DELETE-KEY($pos);
@@ -49,24 +49,24 @@ role Array::Sparse:ver<0.0.5>:auth<cpan:ELIZABETH>
         }
     }
 
-    method elems() { $!end + 1 }
+    method elems(::?ROLE:D:) { $!end + 1 }
 
 #---- Optional methods for performance -----------------------------------------
 
     # so we don't have to do the Proxy dance
-    method ASSIGN-POS($pos, \value) {
+    method ASSIGN-POS(::?ROLE:D: $pos, \value) {
         $!end = $pos if $pos > $!end;
         %!sparse.ASSIGN-KEY($pos,value)
     }
 
     # so we don't have to DELETE-POS everything
-    method CLEAR() {
+    method CLEAR(::?ROLE:D:) {
         %!sparse = ();
         $!end = -1;
     }
 
     # so we don't have to check non-existing keys
-    method move-indexes-up($up, $start = 0 --> Nil) {
+    method move-indexes-up(::?ROLE:D: $up, $start = 0 --> Nil) {
         my $elems = $.elems;   # so we don't need to fetch it all the time
         for %!sparse.keys.grep($start <= * < $elems).sort( -* ) {
             is-container(my \value = %!sparse.DELETE-KEY($_))
@@ -77,7 +77,7 @@ role Array::Sparse:ver<0.0.5>:auth<cpan:ELIZABETH>
     }
 
     # so we don't have to check non-existing keys
-    method move-indexes-down($down, $start = $down --> Nil) {
+    method move-indexes-down(::?ROLE:D: $down, $start = $down --> Nil) {
 
         # clear out all keys that are to be gone (may be missed when moving)
         %!sparse.DELETE-KEY($_) for %!sparse.keys.grep(* < $start);
@@ -98,19 +98,19 @@ role Array::Sparse:ver<0.0.5>:auth<cpan:ELIZABETH>
     }
 
 #---- Methods with slightly different semantics --------------------------------
-    method iterator() {
+    method iterator(::?ROLE:D:) {
         self.values.iterator
     }
-    method keys() {
+    method keys(::?ROLE:D:) {
         %!sparse.keys.map( +* ).sort
     }
-    method values() {
+    method values(::?ROLE:D:) {
         %!sparse.keys.sort( +* ).map: { %!sparse.AT-KEY($_) }
     }
-    method pairs() {
+    method pairs(::?ROLE:D:) {
         self.keys.map: { Pair.new($_, %!sparse.AT-KEY($_)) }
     }
-    method antipairs() {
+    method antipairs(::?ROLE:D:) {
         self.keys.map: { Pair.new(%!sparse.AT-KEY($_), $_) }
     }
 
@@ -130,7 +130,7 @@ role Array::Sparse:ver<0.0.5>:auth<cpan:ELIZABETH>
             }
         }
     }
-    method kv() {
+    method kv(::?ROLE:D:) {
         Seq.new(KV.new(backend => %!sparse, iterator => self.keys.iterator))
     }
 
@@ -182,10 +182,10 @@ Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018, 2020 Elizabeth Mattijsen
+Copyright 2018,2020,2021 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
 =end pod
 
-# vim: ft=perl6 expandtab sw=4
+# vim: expandtab shiftwidth=4

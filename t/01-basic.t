@@ -226,4 +226,4 @@ subtest {
     is @b.end,   4, 'did we get right last element after unshift';
 }, 'test holes in arrays';
 
-# vim: ft=perl6 expandtab sw=4
+# vim: expandtab shiftwidth=4
