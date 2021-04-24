@@ -12,7 +12,7 @@ is-deeply @a.shape, (*,), 'is the shape ok';
 
 is @a.gist,                  "[1 2 3 4 5 6 7 8 9 10]", 'does .gist work ok';
 is @a.Str,                    "1 2 3 4 5 6 7 8 9 10",  'does .Str work ok';
-is @a.perl, "Array::Sparse.new(1,2,3,4,5,6,7,8,9,10)", 'does .perl work ok';
+is @a.raku, "Array::Sparse.new(1,2,3,4,5,6,7,8,9,10)", 'does .raku work ok';
 
 subtest {
     plan 10;
