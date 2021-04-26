@@ -135,40 +135,32 @@ role Array::Sparse:ver<0.0.6>:auth<cpan:ELIZABETH>
     }
 
     method raku(::?ROLE:D:) {
-        my @chunks; # contiguous ranges of existing values
-        my $last_i; # faster to type and execute than @chunks[*-1].key[1]
+        return '(my @ is ' ~ ::?ROLE.^name ~ ')' unless %!sparse;
 
-        for %!sparse.pairs.sort(*.key) {
-            if $last_i.defined && .key == $last_i + 1 {
-                # append to last chunk
-                @chunks[*-1].value.push: .value;
-                @chunks[*-1].key[1]++;
-            } else {
-                # push new chunk
-                # key is a 2-element Array instead of a Range for mutability
-                push @chunks, [.key, .key] => [.value];
-            }
-            $last_i = .key;
-        }
+        my $chunk_start; # beginning of the current contiguous range
+        my $last_i; # previous iteration's index
+        my $indices; # LHS slice
+        my $values = ''; # RHS list
 
-        my $raku = 'do { (my @a is ' ~ ::?ROLE.^name ~ ')[';
-        for @chunks».key { # build indices
-            if .[0] == .[1] {
-                $raku ~= .[0] ~ ', ';
-            } else {
-                $raku ~= .[0] ~ '..' ~ .[1] ~ ', ' ;
+        for self.keys {
+            if !$last_i.defined { # first iteration
+                $indices = ~$_;
+                $chunk_start = $_;
+            } elsif $_ != $last_i + 1 { # beginning of new chunk
+                if $chunk_start === $last_i { # following single-element chunk
+                    $indices ~= ", $_";
+                } else { # following multi-element chunk
+                    $indices ~= "..$last_i, $_";
+                }
+                $chunk_start = $_;
             }
+            $values ~= "%!sparse.AT-KEY($_).raku(), ";
+            $last_i = $_;
         }
-        $raku .= chop: 2;
-        $raku ~= '] = ';
-        for @chunks».value { # build values
-            for @$_ {
-                $raku ~= $_.raku ~ ', ';
-            }
-        }
-        $raku .= chop: 2;
-        $raku ~= '; @a; }';
-        $raku;
+        $indices ~= "..$last_i" if $last_i != $chunk_start; # close final chunk
+
+        'do { (my @a is ' ~ ::?ROLE.^name ~ ')[' ~ $indices ~ '] = ' ~
+            $values.chop(2) ~ '; @a; }';
     }
 
 #---- Our own private methods --------------------------------------------------
