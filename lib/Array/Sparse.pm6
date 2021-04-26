@@ -17,7 +17,7 @@ role Array::Sparse:ver<0.0.6>:auth<cpan:ELIZABETH>
             Proxy.new(
                 FETCH => -> $ { %!sparse.AT-KEY($pos) },
                 STORE => -> $, \value is raw {
-                    self!find-end if $pos > $!end;
+                    $!end = $pos if $pos > $!end;
                     %!sparse.ASSIGN-KEY($pos, value);
                 }
             )
