@@ -135,7 +135,7 @@ role Array::Sparse:ver<0.0.6>:auth<cpan:ELIZABETH>
     }
 
     method raku(::?ROLE:D:) {
-        return '(my @ is ' ~ ::?ROLE.^name ~ ')' unless %!sparse;
+        return self.Array::Agnostic::raku if %!sparse == $!end + 1; # solid
 
         my $chunk_start;                        # beginning of contiguous chunk
         my $last_i;                             # previous iteration's index
@@ -147,26 +147,26 @@ role Array::Sparse:ver<0.0.6>:auth<cpan:ELIZABETH>
                 $indices = ~$_;
                 $chunk_start = $_;
             } elsif $_ != $last_i + 1 {             # beginning of next chunk
-                if $chunk_start == $last_i {            # after 1-element chunk
-                    $indices ~= ", $_";
-                } elsif $chunk_start == $last_i - 1 {   # after 2-element chunk
-                    $indices ~= ", $last_i, $_";
-                } else {                                # after >2-element chunk
-                    $indices ~= "..$last_i, $_";
+                if $chunk_start == $last_i {            # after 1 element chunk
+                    $indices ~= ",$_";
+                } elsif $chunk_start == $last_i - 1 {   # after 2 element chunk
+                    $indices ~= ",$last_i,$_";
+                } else {                                # after 3+ element chunk
+                    $indices ~= "..$last_i,$_";
                 }
                 $chunk_start = $_;
             }
-            $values ~= "%!sparse.AT-KEY($_).raku(), ";
+            $values ~= "%!sparse.AT-KEY($_).raku(),";
             $last_i = $_;
         }
-        if $chunk_start == $last_i - 1 {        # close final 2-element chunk
-            $indices ~= ", $last_i";
-        } elsif $chunk_start != $last_i {       # close final >2-element chunk
+        if $chunk_start == $last_i - 1 {        # close final 2 element chunk
+            $indices ~= ",$last_i";
+        } elsif $chunk_start != $last_i {       # close final 3+ element chunk
             $indices ~= "..$last_i";
         }
 
-        'do { (my @a is ' ~ ::?ROLE.^name ~ ')[' ~ $indices ~ '] = ' ~
-            $values.chop(2) ~ '; @a; }';
+        'do {(my \a := ' ~ ::?ROLE.^name ~ '.new)[' ~ $indices ~ '] = ' ~
+            $values.chop ~ '; a; }';
     }
 
 #---- Our own private methods --------------------------------------------------
