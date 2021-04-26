@@ -2,7 +2,7 @@ use v6.d;
 
 use Array::Agnostic:ver<0.0.9>:auth<cpan:ELIZABETH>;
 
-role Array::Sparse:ver<0.0.6>:auth<cpan:ELIZABETH>
+role Array::Sparse:ver<0.0.7>:auth<cpan:ELIZABETH>
   does Array::Agnostic
 {
     has %!sparse;

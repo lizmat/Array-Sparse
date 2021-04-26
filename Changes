@@ -2,6 +2,10 @@ Revision history for Array-Sparse
 
 {{$NEXT}}
 
+0.0.7  2021-04-26T19:01:31+02:00
+    - Fix bug in determination of end, raydiak++
+    - Fix deprecation warning in tests, raydiak++
+
 0.0.6  2021-01-30T13:25:42+01:00
     - Bump dependency on Array::Agnostic
     - Make sure provided methods only take instances
