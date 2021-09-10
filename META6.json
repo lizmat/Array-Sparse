@@ -1,19 +1,19 @@
 {
-  "auth": "cpan:ELIZABETH",
+  "auth": "zef:lizmat",
   "authors": [
     "Elizabeth Mattijsen"
   ],
   "build-depends": [
   ],
   "depends": [
-    "Array::Agnostic:ver<0.0.9>:auth<cpan:ELIZABETH>"
+    "Array::Agnostic:ver<0.0.10>:auth<zef:lizmat>"
   ],
   "description": "role for sparsely populated Arrays",
   "license": "Artistic-2.0",
   "name": "Array::Sparse",
   "perl": "6.d",
   "provides": {
-    "Array::Sparse": "lib/Array/Sparse.pm6"
+    "Array::Sparse": "lib/Array/Sparse.rakumod"
   },
   "resources": [
   ],
@@ -23,5 +23,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.0.7"
+  "version": "0.0.8"
 }

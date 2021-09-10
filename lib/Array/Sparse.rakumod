@@ -1,8 +1,8 @@
 use v6.d;
 
-use Array::Agnostic:ver<0.0.9>:auth<cpan:ELIZABETH>;
+use Array::Agnostic:ver<0.0.10>:auth<zef:lizmat>;
 
-role Array::Sparse:ver<0.0.7>:auth<cpan:ELIZABETH>
+role Array::Sparse:ver<0.0.8>:auth<zef:lizmat>
   does Array::Agnostic
 {
     has %!sparse;
@@ -175,14 +175,14 @@ C<.kv>, C<.iterator>, C<.head>, C<.tail>, etc.
 
 =head1 AUTHOR
 
-Elizabeth Mattijsen <liz@wenzperl.nl>
+Elizabeth Mattijsen <liz@raku.rocks>
 
 Source can be located at: https://github.com/lizmat/Array-Sparse .
 Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018,2020,2021 Elizabeth Mattijsen
+Copyright 2018, 2020, 2021 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
