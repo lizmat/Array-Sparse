@@ -34,12 +34,15 @@ subtest {
 }, 'checking [* - x]';
 
 subtest {
-    plan 5;
+    plan 8;
     ok @a[9]:exists, 'does last element exist';
     is @a[9]:delete, 10, 'does :delete work on last element';
     nok @a[9]:exists, 'does last element no longer exist';
-    is @a.elems, 9, 'do we have one element less now: elems';
-    is @a.end,   8, 'do we have one element less now: end';
+    is-deeply @a.elems, 9, 'do we have one element less now: elems';
+    is-deeply @a.end,   8, 'do we have one element less now: end';
+    is-deeply +@a, 9, 'does it numerify ok';
+    is-deeply @a.Int, 9, 'does it intify ok';
+    is-deeply ?@a, True, 'does it boolify ok';
 }, 'deletion of last element';
 
 subtest {
