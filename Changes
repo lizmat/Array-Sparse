@@ -2,6 +2,10 @@ Revision history for Array-Sparse
 
 {{$NEXT}}
 
+0.0.10  2024-04-28T12:37:14+02:00
+    - Up dependency on Array::Agnostic
+    - Update copyright year
+
 0.0.9  2023-12-21T11:39:14+01:00
     - Up dependency on Array::Agnostic
     - Use .rakutest extension for tests

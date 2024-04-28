@@ -1,6 +1,6 @@
 use v6.d;
 
-use Array::Agnostic:ver<0.0.11>:auth<zef:lizmat>;
+use Array::Agnostic:ver<0.0.12>:auth<zef:lizmat>;
 
 role Array::Sparse does Array::Agnostic {
     has %!sparse;
@@ -184,7 +184,7 @@ deal to me!
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018, 2020, 2021, 2023 Elizabeth Mattijsen
+Copyright 2018, 2020, 2021, 2023, 2024 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
