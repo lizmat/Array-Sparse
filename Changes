@@ -1,6 +1,10 @@
 Revision history for Array-Sparse
 
 {{$NEXT}}
+    - Up dependency on Array::Agnostic
+    - Modernize rakudoc
+    - Add separate CI badges for each OS supported
+    - Add sponsor button
 
 0.0.10  2024-04-28T12:37:14+02:00
     - Up dependency on Array::Agnostic

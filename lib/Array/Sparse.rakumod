@@ -1,6 +1,6 @@
 use v6.d;
 
-use Array::Agnostic:ver<0.0.12>:auth<zef:lizmat>;
+use Array::Agnostic:ver<0.0.13>:auth<zef:lizmat>;
 
 role Array::Sparse does Array::Agnostic {
     has %!sparse;
@@ -148,9 +148,13 @@ Array::Sparse - role for sparsely populated Arrays
 
 =head1 SYNOPSIS
 
-  use Array::Sparse;
+=begin code :lang<raku>
 
-  my @a is Array::Sparse;
+use Array::Sparse;
+
+my @a is Array::Sparse;
+
+=end code
 
 =head1 DESCRIPTION
 

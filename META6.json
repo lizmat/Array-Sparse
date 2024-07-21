@@ -6,7 +6,7 @@
   "build-depends": [
   ],
   "depends": [
-    "Array::Agnostic:ver<0.0.12>:auth<zef:lizmat>"
+    "Array::Agnostic:ver<0.0.13>:auth<zef:lizmat>"
   ],
   "description": "role for sparsely populated Arrays",
   "license": "Artistic-2.0",
