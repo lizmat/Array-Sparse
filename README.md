@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/lizmat/Array-Sparse/workflows/test/badge.svg)](https://github.com/lizmat/Array-Sparse/actions)
+[![Actions Status](https://github.com/lizmat/Array-Sparse/actions/workflows/linux.yml/badge.svg)](https://github.com/lizmat/Array-Sparse/actions) [![Actions Status](https://github.com/lizmat/Array-Sparse/actions/workflows/macos.yml/badge.svg)](https://github.com/lizmat/Array-Sparse/actions) [![Actions Status](https://github.com/lizmat/Array-Sparse/actions/workflows/windows.yml/badge.svg)](https://github.com/lizmat/Array-Sparse/actions)
 
 NAME
 ====
@@ -8,9 +8,11 @@ Array::Sparse - role for sparsely populated Arrays
 SYNOPSIS
 ========
 
-    use Array::Sparse;
+```raku
+use Array::Sparse;
 
-    my @a is Array::Sparse;
+my @a is Array::Sparse;
+```
 
 DESCRIPTION
 ===========
