@@ -35,6 +35,13 @@ elements that actually exist.  This affects methods such as
 C<.keys>, C<.values>, C<.pairs>, C<.kv>, C<.iterator>, C<.head>,
 C<.tail>, etc.
 
+=head1 SEE ALSO
+
+If the numeric values of the sparse array do B<not> exceed the
+native integer range, then the
+L<C<Hash::int>|https://raku.land/zef:lizmat/Hash::int> may also
+be of interest.
+
 =head1 AUTHOR
 
 Elizabeth Mattijsen <liz@raku.rocks>

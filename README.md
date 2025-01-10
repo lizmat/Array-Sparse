@@ -28,6 +28,11 @@ Iterating Methods
 
 Methods that iterate over the sparse array, will only report elements that actually exist. This affects methods such as `.keys`, `.values`, `.pairs`, `.kv`, `.iterator`, `.head`, `.tail`, etc.
 
+SEE ALSO
+========
+
+If the numeric values of the sparse array do **not** exceed the native integer range, then the [`Hash::int`](https://raku.land/zef:lizmat/Hash::int) may also be of interest.
+
 AUTHOR
 ======
 
