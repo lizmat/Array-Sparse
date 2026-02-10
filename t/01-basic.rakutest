@@ -3,16 +3,18 @@ use Test;
 
 use Array::Sparse;
 
-plan 22;
+plan 23;
 
 my @a is Array::Sparse = 1 .. 10;
 is @a.elems, 10, 'did we get 10 elements';
 is @a.end,    9, 'is index 9 the last element';
 is-deeply @a.shape, (*,), 'is the shape ok';
 
-is @a.gist,                  "[1 2 3 4 5 6 7 8 9 10]", 'does .gist work ok';
-is @a.Str,                    "1 2 3 4 5 6 7 8 9 10",  'does .Str work ok';
-is @a.raku, "Array::Sparse.new(1,2,3,4,5,6,7,8,9,10)", 'does .raku work ok';
+is @a.gist, "[1 2 3 4 5 6 7 8 9 10]", 'does .gist work ok';
+is @a.Str,  "1 2 3 4 5 6 7 8 9 10",   'does .Str work ok';
+is @a.raku,
+  "Array::Sparse.new(0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8,8=>9,9=>10, :from-pairs)",
+  'does .raku work ok';
 
 subtest 'checking iterator' => {
     plan 10;
@@ -234,16 +236,18 @@ subtest 'test holes in arrays' => {
 subtest 'test proxy use and binding' => {
     plan 5;
     my $b := @a[123456789];
-    is ($b = 42), 42,                'can we assign through proxy and return value';
-    is @a[123456789], 42,            'did the value get set through the proxy';
-    is (@a[1234567890] := 666), 666, 'can we bind to an element and return value';
+    is ($b = 42), 42,     'can we assign through proxy and return value';
+    is @a[123456789], 42, 'did the value get set through the proxy';
+
+    is (@a[1234567890] := 666), 666, 'can we bind and return value';
     is @a[1234567890], 666,          'and was it bound';
     throws-like { @a[1234567890] = 137 }, X::AdHoc,
-      'prohibited from assigning again';
+      'after binding, prohibited from assigning again';
 }
+
+is-deeply @a.raku.EVAL, @a, 'does .raku roundtrip with holes';
 
 @a = ();
 is @a.elems, 0, 'is it empty now';
-
 
 # vim: expandtab shiftwidth=4

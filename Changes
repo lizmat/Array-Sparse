@@ -1,6 +1,8 @@
 Revision history for Array-Sparse
 
 {{$NEXT}}
+    - Fix .raku representation for when there are holes
+      making sure that .raku.EVAL will roundtrip
 
 0.0.12  2026-02-10T17:49:32+01:00
     - Up dependency on Array::Agnostic to get STORE method

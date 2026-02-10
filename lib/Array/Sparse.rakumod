@@ -4,6 +4,33 @@ role Array::Sparse does Array::Agnostic {
     has %!sparse;
     has $.end = -1;
 
+    method new(::?ROLE: *@values, :$from-pairs) {
+        self.bless(:@values, :$from-pairs)
+    }
+
+    submethod TWEAK(:@values, :$from-pairs) {
+        my %sparse := %!sparse; # lexical access is faster
+
+        if $from-pairs {
+            %sparse.ASSIGN-KEY(.key.Int, .value) for @values;
+        }
+        else {
+            my int $index;
+            %sparse.ASSIGN-KEY($index++, $_) for @values;
+        }
+    }
+
+    method raku(::?ROLE:D:) {
+        self.rakuseen(self.^name, {
+          ~ self.^name
+          ~ '.new('
+          ~ %!sparse.sort(*.key.Int).map({
+              .key ~ '=>' ~ .value<>.raku
+            }).join(',')
+          ~ ', :from-pairs)'
+        })
+    }
+
 #--- Mandatory method required by Array::Agnostic ------------------------------
     method AT-POS(::?ROLE:D: Int:D $pos) is raw {
         if %!sparse.EXISTS-KEY($pos) || $pos < $!end {  # $!end cannot change
