@@ -5,19 +5,28 @@
   ],
   "build-depends": [
   ],
-  "depends": [
-    "Array::Agnostic:ver<0.0.13+>:auth<zef:lizmat>"
-  ],
+  "depends": {
+    "runtime": {
+      "requires": [
+        "Array::Agnostic:ver<0.0.17+>:auth<zef:lizmat>"
+      ]
+    }
+  },
   "description": "role for sparsely populated Arrays",
   "license": "Artistic-2.0",
   "name": "Array::Sparse",
-  "perl": "6.d",
   "provides": {
     "Array::Sparse": "lib/Array/Sparse.rakumod"
   },
+  "raku": "6.d",
   "resources": [
   ],
   "source-url": "https://github.com/lizmat/Array-Sparse.git",
+  "support": {
+    "bugtracker": "https://github.com/lizmat/Array-Sparse/issues",
+    "email": "liz@raku.rocks",
+    "source": "https://github.com/lizmat/Array-Sparse.git"
+  },
   "tags": [
     "UTILS"
   ],

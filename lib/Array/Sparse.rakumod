@@ -1,4 +1,4 @@
-use Array::Agnostic:ver<0.0.13+>:auth<zef:lizmat>;
+use Array::Agnostic:ver<0.0.17+>:auth<zef:lizmat>;
 
 role Array::Sparse does Array::Agnostic {
     has %!sparse;
@@ -19,6 +19,10 @@ role Array::Sparse does Array::Agnostic {
             )
         }
     }
+
+    method elems(::?ROLE:D:) { $!end + 1 }
+
+#---- Optional methods for performance -----------------------------------------
 
     method EXISTS-POS(::?ROLE:D: Int:D $pos) {
         %!sparse.EXISTS-KEY($pos)
@@ -45,10 +49,6 @@ role Array::Sparse does Array::Agnostic {
         }
     }
 
-    method elems(::?ROLE:D:) { $!end + 1 }
-
-#---- Optional methods for performance -----------------------------------------
-
     # so we don't have to do the Proxy dance
     method ASSIGN-POS(::?ROLE:D: $pos, \value) {
         $!end = $pos if $pos > $!end;
@@ -57,7 +57,7 @@ role Array::Sparse does Array::Agnostic {
 
     # so we don't have to DELETE-POS everything
     method CLEAR(::?ROLE:D:) {
-        %!sparse = ();
+        %!sparse = ();  # UNCOVERABLE
         $!end = -1;
     }
 

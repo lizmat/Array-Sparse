@@ -3,7 +3,7 @@ use Test;
 
 use Array::Sparse;
 
-plan 20;
+plan 22;
 
 my @a is Array::Sparse = 1 .. 10;
 is @a.elems, 10, 'did we get 10 elements';
@@ -14,26 +14,26 @@ is @a.gist,                  "[1 2 3 4 5 6 7 8 9 10]", 'does .gist work ok';
 is @a.Str,                    "1 2 3 4 5 6 7 8 9 10",  'does .Str work ok';
 is @a.raku, "Array::Sparse.new(1,2,3,4,5,6,7,8,9,10)", 'does .raku work ok';
 
-subtest {
+subtest 'checking iterator' => {
     plan 10;
     my int $value = 0;
     is $_, ++$value, "did iteration {$value -1} produce $value"
       for @a;
-}, 'checking iterator';
+}
 
-subtest {
+subtest 'checking [x]' => {
     plan 10;
     is @a[$_], $_ + 1, "did element $_ produce {$_ + 1}"
       for ^10;
-}, 'checking [x]';
+}
 
-subtest {
+subtest 'checking [* - x]' => {
     plan 10;
     is @a[* - $_], 11 - $_, "did element * - $_ produce {11 - $_}"
       for 1 .. 10;
-}, 'checking [* - x]';
+}
 
-subtest {
+subtest 'deletion of last element' => {
     plan 8;
     ok @a[9]:exists, 'does last element exist';
     is @a[9]:delete, 10, 'does :delete work on last element';
@@ -43,9 +43,9 @@ subtest {
     is-deeply +@a, 9, 'does it numerify ok';
     is-deeply @a.Int, 9, 'does it intify ok';
     is-deeply ?@a, True, 'does it boolify ok';
-}, 'deletion of last element';
+}
 
-subtest {
+subtest 'can we delete a slice' => {
     plan 5;
     is-deeply @a[3,5,7]:exists, (True,True,True),
       'can we check existence of an existing slice';
@@ -55,23 +55,25 @@ subtest {
       'can we check existence of an non-existing slice';
     is @a.elems, 9, 'did we keep same number of elements';
     is @a.end,   8, 'did we keep same last element';
-}, 'can we delete a slice';
+}
 
-subtest {
+subtest 'can we do value slices' => {
     plan 3;
     is-deeply @a[^5]:v, (1,2,3,5), 'does a value slice work';
     is-deeply @a[]:v, (1,2,3,5,7,9), 'does a value zen-slice work';
     is-deeply @a[*]:v, (1,2,3,5,7,9), 'does a value whatever-slice work';
-}, 'can we do value slices';
+}
 
-subtest {
-    plan 11;
+subtest 'check iterator based methods' => {
+    plan 12;
     is-deeply @a.keys, (0,1,2,4,6,8),
       'does .keys work';
     is-deeply @a.values, (1,2,3,5,7,9),
       'does .values work';
     is-deeply @a.pairs, (0=>1,1=>2,2=>3,4=>5,6=>7,8=>9),
       'does .pairs work';
+    is-deeply @a.antipairs, (1=>0,2=>1,3=>2,5=>4,7=>6,9=>8),
+      'does .antipairs work';
     is-deeply @a.kv, (0,1,1,2,2,3,4,5,6,7,8,9),
       'does .kv work';
 
@@ -86,9 +88,9 @@ subtest {
       'does .List work';
     is-deeply @a.Array, Array.new(1,2,3,5,7,9),
       'does .Array work';
-}, 'check iterator based methods';
+}
 
-subtest {
+subtest 'test .push / .append / .pop one element' => {
     plan 14;
     is-deeply @a.push(42), @a, 'did .push return self';
     is @a.elems, 10, 'did we increase number of elements';
@@ -106,9 +108,9 @@ subtest {
     is @a.end,    8, 'did we decrease the last index';
     is @a[ 9],  Any, 'did the elements value disappear I';
     is @a[10],  Any, 'did the elements value disappear II';
-}, 'test .push / .append / .pop one element';
+}
 
-subtest {
+subtest 'test .push / .append / .pop one flattenable element' => {
     plan 11;
     is-deeply @a.push([42,666]), @a, 'did .push return self';
     is @a.elems, 10, 'did we increase number of elements';
@@ -124,9 +126,9 @@ subtest {
     @a.pop for ^3;
     is @a.elems,  9, 'did we decrease number of elements';
     is @a.end,    8, 'did we decrease the last index';
-}, 'test .push / .append / .pop one flattenable element';
+}
 
-subtest {
+subtest 'test .push / .append / .pop multiple elements' => {
     plan 12;
     is-deeply @a.push(42,666), @a, 'did .push return self';
     is @a.elems, 11, 'did we increase number of elements';
@@ -143,9 +145,9 @@ subtest {
     @a.pop for ^4;
     is @a.elems,  9, 'did we decrease number of elements';
     is @a.end,    8, 'did we decrease the last index';
-}, 'test .push / .append / .pop multiple elements';
+}
 
-subtest {
+subtest 'test .unshift / .prepend / .shift one element' => {
     plan 16;
     is-deeply @a.unshift(42), @a, 'did .unshift return self';
     is @a.elems, 10, 'did we increase number of elements';
@@ -165,9 +167,9 @@ subtest {
     is @a.end,     8, 'did we decrease the last index';
     is @a[ 9],   Any, 'did the elements value disappear I';
     is @a[10],   Any, 'did the elements value disappear II';
-}, 'test .unshift / .prepend / .shift one element';
+}
 
-subtest {
+subtest 'test .unshift / .prepend / .shift one flattenable element' => {
     plan 11;
     is-deeply @a.unshift([42,666]), @a, 'did .unshift return self';
     is @a.elems, 10, 'did we increase number of elements';
@@ -183,9 +185,9 @@ subtest {
     @a.shift for ^3;
     is @a.elems,  9, 'did we decrease number of elements';
     is @a.end,    8, 'did we decrease the last index';
-}, 'test .unshift / .prepend / .shift one flattenable element';
+}
 
-subtest {
+subtest 'test .unshift / .append / .shift multiple elements' => {
     plan 12;
     is-deeply @a.unshift(42,666), @a, 'did .unshift return self';
     is @a.elems, 11, 'did we increase number of elements';
@@ -202,9 +204,9 @@ subtest {
     @a.shift for ^4;
     is @a.elems,  9, 'did we decrease number of elements';
     is @a.end,    8, 'did we decrease the last index';
-}, 'test .unshift / .append / .shift multiple elements';
+}
 
-subtest {
+subtest 'test holes in arrays' => {
     plan 35;
     my @b is Array::Sparse;
     is (@b[4] = 42), 42, 'does assignment pass on the value';
@@ -227,6 +229,21 @@ subtest {
     is-deeply @b[$_]:exists, False, "does element $_ not exist" for 5..10;
     is @b.elems, 5, 'did we get right number of elements after unshift';
     is @b.end,   4, 'did we get right last element after unshift';
-}, 'test holes in arrays';
+}
+
+subtest 'test proxy use and binding' => {
+    plan 5;
+    my $b := @a[123456789];
+    is ($b = 42), 42,                'can we assign through proxy and return value';
+    is @a[123456789], 42,            'did the value get set through the proxy';
+    is (@a[1234567890] := 666), 666, 'can we bind to an element and return value';
+    is @a[1234567890], 666,          'and was it bound';
+    throws-like { @a[1234567890] = 137 }, X::AdHoc,
+      'prohibited from assigning again';
+}
+
+@a = ();
+is @a.elems, 0, 'is it empty now';
+
 
 # vim: expandtab shiftwidth=4
