@@ -1,6 +1,8 @@
 Revision history for Array-Sparse
 
 {{$NEXT}}
+
+0.0.13  2026-02-10T19:56:04+01:00
     - Fix .raku representation for when there are holes
       making sure that .raku.EVAL will roundtrip
 
